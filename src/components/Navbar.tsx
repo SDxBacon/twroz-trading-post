@@ -30,16 +30,16 @@ export default function Navbar() {
                 首頁
               </Link>
               <Link
-                href="/products"
+                href="/page-A"
                 className="text-foreground hover:text-gray-600 dark:hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
               >
-                商品
+                頁面 A
               </Link>
               <Link
-                href="/about"
+                href="/page-B"
                 className="text-foreground hover:text-gray-600 dark:hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
               >
-                關於我們
+                頁面 B
               </Link>
               <Link
                 href="/contact"
@@ -87,16 +87,22 @@ export default function Navbar() {
               首頁
             </Link>
             <Link
-              href="/products"
+              href="/page-A"
               className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
             >
-              商品
+              頁面 A
             </Link>
             <Link
-              href="/about"
+              href="/page-B"
               className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
             >
-              關於我們
+              頁面 B
+            </Link>
+            <Link
+              href="/contact"
+              className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
+            >
+              聯絡我們
             </Link>
             <Link
               href="/contact"
