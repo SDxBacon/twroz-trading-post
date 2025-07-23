@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Pagination from "@/components/Pagination";
+import TradeFilter, { TradeFilterType } from "@/components/TradeFilter";
 import TradeListTable, { TradeItem } from "./components/TradeListTable";
 
 // Mock data for trade items
@@ -45,9 +46,12 @@ const mockTradeItems: TradeItem[] = [
 ];
 
 export default function TradePage() {
-  const [filters, setFilters] = useState({
-    itemName: "",
-    insertCard: "",
+  // 篩選器狀態
+  const [filters, setFilters] = useState<TradeFilterType>({
+    itemId: "",
+    itemType: "",
+    sortBy: "created_at",
+    sortOrder: "desc" as "asc" | "desc",
   });
 
   // Pagination state
@@ -56,20 +60,10 @@ export default function TradePage() {
   const totalItems = 127; // This would come from API response
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+  // 處理篩選器變更
+  const handleFiltersChange = (newFilters: typeof filters) => {
+    setFilters(newFilters);
     // Reset to first page when filters change
-    setCurrentPage(1);
-  };
-
-  const resetFilters = () => {
-    setFilters({
-      itemName: "",
-      insertCard: "",
-    });
     setCurrentPage(1);
   };
 
@@ -94,149 +88,11 @@ export default function TradePage() {
         </div>
 
         {/* Filters Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold flex items-center">
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                />
-              </svg>
-              篩選條件
-            </h2>
-            <button
-              onClick={resetFilters}
-              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
-            >
-              重置篩選
-            </button>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Item Name Filter */}
-            <div>
-              <label className="block text-sm font-medium mb-2">道具名稱</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="搜尋道具名稱..."
-                  value={filters.itemName}
-                  onChange={(e) =>
-                    handleFilterChange("itemName", e.target.value)
-                  }
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                />
-                <svg
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Insert Card Filter - Disabled */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-400">
-                插入卡片
-                <span className="ml-1 text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">
-                  即將推出
-                </span>
-              </label>
-              <div className="relative">
-                <select
-                  disabled
-                  value={filters.insertCard}
-                  onChange={(e) =>
-                    handleFilterChange("insertCard", e.target.value)
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-600 text-gray-400 cursor-not-allowed"
-                >
-                  <option value="">選擇卡片類型...</option>
-                  <option value="weapon">武器卡片</option>
-                  <option value="armor">防具卡片</option>
-                  <option value="accessory">飾品卡片</option>
-                  <option value="headgear">頭飾卡片</option>
-                </select>
-                <svg
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Additional Filter Placeholder */}
-            <div>
-              <label className="block text-sm font-medium mb-2">道具類型</label>
-              <select className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white">
-                <option value="">所有類型</option>
-                <option value="weapon">武器</option>
-                <option value="armor">防具</option>
-                <option value="accessory">飾品</option>
-                <option value="card">卡片</option>
-                <option value="consumable">消耗品</option>
-                <option value="material">材料</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Filter Actions */}
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              {filters.itemName && (
-                <span className="inline-flex items-center bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs mr-2">
-                  道具: {filters.itemName}
-                  <button
-                    onClick={() => handleFilterChange("itemName", "")}
-                    className="ml-1 hover:text-blue-600"
-                  >
-                    ×
-                  </button>
-                </span>
-              )}
-            </div>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center">
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-              搜尋交易
-            </button>
-          </div>
-        </div>
+        <TradeFilter
+          filters={filters}
+          onFiltersChange={handleFiltersChange}
+          className="mb-8"
+        />
 
         {/* Trade Results Section */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
