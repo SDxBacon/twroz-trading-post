@@ -1,27 +1,18 @@
 "use client";
 
-interface TradeItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  currency: string;
-  category: string;
-  categoryColor: string;
-  iconEmoji: string;
-  iconGradient: string;
-  publisher: string;
-}
+import { TradeListItem } from "@/types/trade";
 
 interface TradeListTableProps {
-  items: TradeItem[];
-  onItemClick: (item: TradeItem) => void;
+  items: TradeListItem[];
+  onItemClick: (item: TradeListItem) => void;
 }
 
 export default function TradeListTable({
   items,
   onItemClick,
 }: TradeListTableProps) {
+  const iconGradient = "bg-gradient-to-br from-blue-400 to-blue-500"; // Default gradient
+
   const getCategoryColorClass = (categoryColor: string) => {
     const colorClasses: { [key: string]: string } = {
       blue: "bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200",
@@ -51,11 +42,9 @@ export default function TradeListTable({
           onClick={() => onItemClick(item)}
         >
           <div
-            className={`w-16 h-16 ${item.iconGradient} rounded-lg flex items-center justify-center mr-4`}
+            className={`w-16 h-16 ${iconGradient} rounded-lg flex items-center justify-center mr-4`}
           >
-            <span className="text-white font-bold text-lg">
-              {item.iconEmoji}
-            </span>
+            <span className="text-white font-bold text-lg">⚔️</span>
           </div>
           <div className="flex-1">
             <h4 className="font-semibold text-lg">{item.name}</h4>
@@ -65,19 +54,19 @@ export default function TradeListTable({
             <div className="flex items-center space-x-4">
               <span
                 className={`text-sm px-2 py-1 rounded ${getCategoryColorClass(
-                  item.categoryColor
+                  "blue"
                 )}`}
               >
                 {item.category}
               </span>
               <span className="text-xs text-gray-500 dark:text-gray-400">
-                發布者: {item.publisher}
+                發布者: TODO
               </span>
             </div>
           </div>
           <div className="text-right">
             <p className="text-xl font-bold text-green-600 dark:text-green-400">
-              {formatPrice(item.price)} {item.currency}
+              {formatPrice(item.price)} Zeny
             </p>
             <button
               className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
@@ -95,4 +84,4 @@ export default function TradeListTable({
   );
 }
 
-export type { TradeItem };
+export type { TradeListItem };

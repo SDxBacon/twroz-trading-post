@@ -2,46 +2,20 @@
 
 import { useState } from "react";
 import Pagination from "@/components/Pagination";
-import TradeFilter, { TradeFilterType } from "@/components/TradeFilter";
-import TradeListTable, { TradeItem } from "./components/TradeListTable";
+import TradeFilter, {
+  TradeFilterType,
+} from "@/app/trade/components/TradeFilter";
+import TradeListTable, { TradeListItem } from "./components/TradeListTable";
 
 // Mock data for trade items
-const mockTradeItems: TradeItem[] = [
+const mockTradeItems: TradeListItem[] = [
   {
     id: "1",
     name: "+10 聖劍 [1]",
     description: "附魔: ATK +15, 命中 +10",
     price: 50000000,
-    currency: "Z",
+    slotCount: 2,
     category: "武器",
-    categoryColor: "blue",
-    iconEmoji: "⚔️",
-    iconGradient: "bg-gradient-to-br from-orange-400 to-red-500",
-    publisher: "PlayerName123",
-  },
-  {
-    id: "2",
-    name: "+7 瓦爾基里鎧甲 [1]",
-    description: "附魔: DEF +20, MDEF +15",
-    price: 25000000,
-    currency: "Z",
-    category: "防具",
-    categoryColor: "purple",
-    iconEmoji: "🛡️",
-    iconGradient: "bg-gradient-to-br from-purple-400 to-pink-500",
-    publisher: "TraderPro",
-  },
-  {
-    id: "3",
-    name: "MVP卡片 - 波利王卡片",
-    description: "效果: HP +100%, SP +50%",
-    price: 999999999,
-    currency: "Z",
-    category: "卡片",
-    categoryColor: "yellow",
-    iconEmoji: "💎",
-    iconGradient: "bg-gradient-to-br from-yellow-400 to-orange-500",
-    publisher: "MVPHunter",
   },
 ];
 
@@ -71,7 +45,7 @@ export default function TradePage() {
     setCurrentPage(page);
   };
 
-  const handleItemClick = (item: TradeItem) => {
+  const handleItemClick = (item: TradeListItem) => {
     console.log("查看交易詳情:", item);
     // TODO: Navigate to trade detail page or open modal
   };
