@@ -2,6 +2,47 @@
 
 import { useState } from "react";
 import Pagination from "@/components/Pagination";
+import TradeListTable, { TradeItem } from "./components/TradeListTable";
+
+// Mock data for trade items
+const mockTradeItems: TradeItem[] = [
+  {
+    id: "1",
+    name: "+10 聖劍 [1]",
+    description: "附魔: ATK +15, 命中 +10",
+    price: 50000000,
+    currency: "Z",
+    category: "武器",
+    categoryColor: "blue",
+    iconEmoji: "⚔️",
+    iconGradient: "bg-gradient-to-br from-orange-400 to-red-500",
+    publisher: "PlayerName123",
+  },
+  {
+    id: "2",
+    name: "+7 瓦爾基里鎧甲 [1]",
+    description: "附魔: DEF +20, MDEF +15",
+    price: 25000000,
+    currency: "Z",
+    category: "防具",
+    categoryColor: "purple",
+    iconEmoji: "🛡️",
+    iconGradient: "bg-gradient-to-br from-purple-400 to-pink-500",
+    publisher: "TraderPro",
+  },
+  {
+    id: "3",
+    name: "MVP卡片 - 波利王卡片",
+    description: "效果: HP +100%, SP +50%",
+    price: 999999999,
+    currency: "Z",
+    category: "卡片",
+    categoryColor: "yellow",
+    iconEmoji: "💎",
+    iconGradient: "bg-gradient-to-br from-yellow-400 to-orange-500",
+    publisher: "MVPHunter",
+  },
+];
 
 export default function TradePage() {
   const [filters, setFilters] = useState({
@@ -34,6 +75,11 @@ export default function TradePage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleItemClick = (item: TradeItem) => {
+    console.log("查看交易詳情:", item);
+    // TODO: Navigate to trade detail page or open modal
   };
 
   return (
@@ -212,97 +258,11 @@ export default function TradePage() {
           </div>
 
           <div className="p-6">
-            {/* Sample Trade Items */}
-            <div className="grid gap-4">
-              {/* Trade Item 1 */}
-              <div className="flex items-center p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center mr-4">
-                  <span className="text-white font-bold text-lg">⚔️</span>
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-semibold text-lg">+10 聖劍 [1]</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    附魔: ATK +15, 命中 +10
-                  </p>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
-                      武器
-                    </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      發布者: PlayerName123
-                    </span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-xl font-bold text-green-600 dark:text-green-400">
-                    50,000,000 Z
-                  </p>
-                  <button className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
-                    查看詳情
-                  </button>
-                </div>
-              </div>
-
-              {/* Trade Item 2 */}
-              <div className="flex items-center p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center mr-4">
-                  <span className="text-white font-bold text-lg">🛡️</span>
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-semibold text-lg">+7 瓦爾基里鎧甲 [1]</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    附魔: DEF +20, MDEF +15
-                  </p>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">
-                      防具
-                    </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      發布者: TraderPro
-                    </span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-xl font-bold text-green-600 dark:text-green-400">
-                    25,000,000 Z
-                  </p>
-                  <button className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
-                    查看詳情
-                  </button>
-                </div>
-              </div>
-
-              {/* Trade Item 3 */}
-              <div className="flex items-center p-4 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center mr-4">
-                  <span className="text-white font-bold text-lg">💎</span>
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-semibold text-lg">
-                    MVP卡片 - 波利王卡片
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    效果: HP +100%, SP +50%
-                  </p>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded">
-                      卡片
-                    </span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      發布者: MVPHunter
-                    </span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-xl font-bold text-green-600 dark:text-green-400">
-                    999,999,999 Z
-                  </p>
-                  <button className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
-                    查看詳情
-                  </button>
-                </div>
-              </div>
-            </div>
+            {/* Trade Items */}
+            <TradeListTable
+              items={mockTradeItems}
+              onItemClick={handleItemClick}
+            />
 
             {/* Pagination */}
             <Pagination
