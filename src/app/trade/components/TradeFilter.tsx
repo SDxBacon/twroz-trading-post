@@ -136,6 +136,44 @@ export default function TradeFilter({
           </button>
         </div>
 
+        {/* 伺服器選擇 */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            選擇伺服器
+          </label>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center">
+              <input
+                id="server-a"
+                name="server"
+                type="radio"
+                defaultChecked
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600"
+              />
+              <label
+                htmlFor="server-a"
+                className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
+              >
+                伺服器 A
+              </label>
+            </div>
+            <div className="flex items-center">
+              <input
+                id="server-b"
+                name="server"
+                type="radio"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600"
+              />
+              <label
+                htmlFor="server-b"
+                className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
+              >
+                伺服器 B
+              </label>
+            </div>
+          </div>
+        </div>
+
         {/* 第一行：搜尋和分類 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <TradeFilterItemNameInput />
