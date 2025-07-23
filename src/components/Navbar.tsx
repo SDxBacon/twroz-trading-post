@@ -31,10 +31,10 @@ export default function Navbar() {
                 首頁
               </Link>
               <Link
-                href="/page-A"
+                href="/trade"
                 className="text-foreground hover:text-gray-600 dark:hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
               >
-                頁面 A
+                交易市場
               </Link>
             </div>
 
@@ -79,10 +79,10 @@ export default function Navbar() {
               首頁
             </Link>
             <Link
-              href="/page-A"
+              href="/trade"
               className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
             >
-              頁面 A
+              交易市場
             </Link>
             <Link
               href="/account"

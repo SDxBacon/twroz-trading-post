@@ -26,10 +26,10 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link
-                href="/page-A"
+                href="/trade"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-medium text-lg transition-colors inline-flex items-center justify-center"
               >
-                探索頁面 A
+                進入交易市場
                 <svg
                   className="w-5 h-5 ml-2"
                   fill="none"
@@ -40,7 +40,7 @@ export default function Home() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M9 5l7 7-7 7"
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                   />
                 </svg>
               </Link>
