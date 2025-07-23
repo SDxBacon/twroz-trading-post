@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Pagination from "@/components/Pagination";
 
 export default function TradePage() {
   const [filters, setFilters] = useState({
@@ -8,11 +9,19 @@ export default function TradePage() {
     insertCard: "",
   });
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalItems = 127; // This would come from API response
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value,
     }));
+    // Reset to first page when filters change
+    setCurrentPage(1);
   };
 
   const resetFilters = () => {
@@ -20,6 +29,11 @@ export default function TradePage() {
       itemName: "",
       insertCard: "",
     });
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -291,28 +305,13 @@ export default function TradePage() {
             </div>
 
             {/* Pagination */}
-            <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200 dark:border-gray-600">
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                顯示 1-10 項，共 127 項交易
-              </div>
-              <div className="flex items-center space-x-2">
-                <button className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                  上一頁
-                </button>
-                <button className="px-3 py-2 bg-blue-600 text-white rounded-lg">
-                  1
-                </button>
-                <button className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                  2
-                </button>
-                <button className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                  3
-                </button>
-                <button className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                  下一頁
-                </button>
-              </div>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
       </div>
