@@ -1,7 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  flexRender,
+  createColumnHelper,
+  // ColumnDef,
+} from "@tanstack/react-table";
 import { ROUTES } from "../../constants/router";
 
 interface OfferItem {
@@ -46,21 +55,35 @@ const mockOffers: OfferItem[] = [
     createdAt: "2024-01-05",
     category: "武器",
   },
+  {
+    id: "4",
+    title: "惡魔女僕頭飾",
+    description: "稀有時裝頭飾，增加魅力",
+    price: 25000000,
+    currency: "zeny",
+    status: "active",
+    createdAt: "2024-01-12",
+    category: "頭飾",
+  },
+  {
+    id: "5",
+    title: "MVP 波利王卡片",
+    description: "極稀有 MVP 卡片，大幅提升生命值",
+    price: 200000000,
+    currency: "zeny",
+    status: "pending",
+    createdAt: "2024-01-08",
+    category: "卡片",
+  },
 ];
+
+const columnHelper = createColumnHelper<OfferItem>();
 
 export default function MyOfferPage() {
   const [selectedTab, setSelectedTab] = useState<
     "all" | "active" | "pending" | "completed"
   >("all");
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredOffers = mockOffers.filter((offer) => {
-    const matchesTab = selectedTab === "all" || offer.status === selectedTab;
-    const matchesSearch =
-      offer.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      offer.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesTab && matchesSearch;
-  });
+  const [globalFilter, setGlobalFilter] = useState("");
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -91,6 +114,99 @@ export default function MyOfferPage() {
         return status;
     }
   };
+
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: "title",
+        id: "item",
+        header: "道具",
+        cell: ({ row }: { row: any }) => (
+          <div>
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
+              {row.original.title}
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+              {row.original.description}
+            </p>
+            <span className="text-xs text-gray-500 dark:text-gray-500">
+              {row.original.category}
+            </span>
+          </div>
+        ),
+      },
+      {
+        accessorKey: "price",
+        header: "價格",
+        cell: ({ getValue, row }: { getValue: any; row: any }) => (
+          <div className="text-right">
+            <div className="font-bold text-blue-600 text-lg">
+              {getValue().toLocaleString()}{" "}
+              {row.original.currency === "zeny" ? "z" : row.original.currency}
+            </div>
+          </div>
+        ),
+      },
+      {
+        accessorKey: "status",
+        header: "狀態",
+        cell: ({ getValue }: { getValue: any }) => (
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+              getValue()
+            )}`}
+          >
+            {getStatusText(getValue())}
+          </span>
+        ),
+      },
+      {
+        accessorKey: "createdAt",
+        header: "發布日期",
+        cell: ({ getValue }: { getValue: any }) => (
+          <span className="text-sm text-gray-600 dark:text-gray-400">
+            {getValue()}
+          </span>
+        ),
+      },
+      {
+        id: "actions",
+        header: "操作",
+        cell: ({ row }: { row: any }) => (
+          <div className="flex gap-2">
+            <button className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-1 rounded text-sm font-medium transition-colors">
+              編輯
+            </button>
+            {row.original.status === "active" && (
+              <button className="bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800 px-3 py-1 rounded text-sm font-medium transition-colors">
+                取消
+              </button>
+            )}
+          </div>
+        ),
+      },
+    ],
+    []
+  );
+
+  const filteredData = useMemo(() => {
+    return mockOffers.filter((offer) => {
+      const matchesTab = selectedTab === "all" || offer.status === selectedTab;
+      return matchesTab;
+    });
+  }, [selectedTab]);
+
+  const table = useReactTable({
+    data: filteredData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      globalFilter,
+    },
+    onGlobalFilterChange: setGlobalFilter,
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
@@ -157,8 +273,8 @@ export default function MyOfferPage() {
                 <input
                   type="text"
                   placeholder="搜尋交易提案..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={globalFilter}
+                  onChange={(e) => setGlobalFilter(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
                 <svg
@@ -179,10 +295,10 @@ export default function MyOfferPage() {
           </div>
         </div>
 
-        {/* Offers List */}
-        <div className="space-y-4">
-          {filteredOffers.length === 0 ? (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-12 text-center">
+        {/* Table */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+          {table.getRowModel().rows.length === 0 ? (
+            <div className="p-12 text-center">
               <div className="text-gray-400 mb-4">
                 <svg
                   className="w-16 h-16 mx-auto"
@@ -202,7 +318,7 @@ export default function MyOfferPage() {
                 沒有找到交易提案
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                {searchTerm ? "嘗試調整搜尋條件" : "您還沒有發布任何交易提案"}
+                {globalFilter ? "嘗試調整搜尋條件" : "您還沒有發布任何交易提案"}
               </p>
               <Link
                 href={ROUTES.TRADE}
@@ -212,57 +328,56 @@ export default function MyOfferPage() {
               </Link>
             </div>
           ) : (
-            filteredOffers.map((offer) => (
-              <div
-                key={offer.id}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="p-6">
-                  <div className="flex flex-col sm:flex-row gap-4 justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                            {offer.title}
-                          </h3>
-                          <p className="text-gray-600 dark:text-gray-400 mb-3">
-                            {offer.description}
-                          </p>
-                          <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
-                            <span>類別：{offer.category}</span>
-                            <span>發布日期：{offer.createdAt}</span>
-                          </div>
-                        </div>
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                            offer.status
-                          )}`}
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-900">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <th
+                          key={header.id}
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
+                          onClick={header.column.getToggleSortingHandler()}
                         >
-                          {getStatusText(offer.status)}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="sm:text-right">
-                      <div className="text-2xl font-bold text-blue-600 mb-2">
-                        {offer.price.toLocaleString()}{" "}
-                        {offer.currency === "zeny" ? "z" : offer.currency}
-                      </div>
-                      <div className="flex gap-2">
-                        <button className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-1 rounded text-sm font-medium transition-colors">
-                          編輯
-                        </button>
-                        {offer.status === "active" && (
-                          <button className="bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800 px-3 py-1 rounded text-sm font-medium transition-colors">
-                            取消
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))
+                          <div className="flex items-center gap-2">
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                            {{
+                              asc: "↑",
+                              desc: "↓",
+                            }[header.column.getIsSorted() as string] ?? null}
+                          </div>
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  {table.getRowModel().rows.map((row) => (
+                    <tr
+                      key={row.id}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          key={cell.id}
+                          className="px-6 py-4 whitespace-nowrap"
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>
