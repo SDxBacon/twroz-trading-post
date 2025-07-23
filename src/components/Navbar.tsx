@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { NAVIGATION_ITEMS } from "../constants/router";
 import AvatarDropdown from "./AvatarDropdown";
 
 export default function Navbar() {
@@ -24,18 +25,15 @@ export default function Navbar() {
           {/* Navigation Links */}
           <div className="hidden md:flex md:items-center md:space-x-8">
             <div className="flex items-baseline space-x-8">
-              <Link
-                href="/"
-                className="text-foreground hover:text-gray-600 dark:hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                首頁
-              </Link>
-              <Link
-                href="/trade"
-                className="text-foreground hover:text-gray-600 dark:hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                交易市場
-              </Link>
+              {NAVIGATION_ITEMS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-foreground hover:text-gray-600 dark:hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
 
             {/* Avatar Dropdown */}
@@ -72,18 +70,15 @@ export default function Navbar() {
         {/* Mobile menu */}
         <div className="md:hidden" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link
-              href="/"
-              className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
-            >
-              首頁
-            </Link>
-            <Link
-              href="/trade"
-              className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
-            >
-              交易市場
-            </Link>
+            {NAVIGATION_ITEMS.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
             <Link
               href="/account"
               className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"

@@ -4,12 +4,14 @@ export const ROUTES = {
   TRADE: "/trade",
   ACCOUNT: "/account",
   ORDERS: "/orders",
+  MY_OFFER: "/my-offer",
 } as const;
 
 // 導航選單項目
 export const NAVIGATION_ITEMS = [
   { href: ROUTES.HOME, label: "首頁" },
   { href: ROUTES.TRADE, label: "交易市場" },
+  { href: ROUTES.MY_OFFER, label: "我的提案" },
 ] as const;
 
 // 用戶選單項目（不包含設定）
