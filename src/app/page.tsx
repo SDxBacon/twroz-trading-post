@@ -45,10 +45,10 @@ export default function Home() {
                 </svg>
               </Link>
               <Link
-                href="/page-B"
+                href="/account"
                 className="border-2 border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white px-8 py-4 rounded-lg font-medium text-lg transition-colors inline-flex items-center justify-center"
               >
-                查看頁面 B
+                我的帳戶
                 <svg
                   className="w-5 h-5 ml-2"
                   fill="none"
@@ -59,7 +59,7 @@ export default function Home() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M9 5l7 7-7 7"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                   />
                 </svg>
               </Link>

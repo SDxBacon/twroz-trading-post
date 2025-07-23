@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import AvatarDropdown from "./AvatarDropdown";
 
 export default function Navbar() {
   return (
@@ -21,8 +22,8 @@ export default function Navbar() {
           </div>
 
           {/* Navigation Links */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+          <div className="hidden md:flex md:items-center md:space-x-8">
+            <div className="flex items-baseline space-x-8">
               <Link
                 href="/"
                 className="text-foreground hover:text-gray-600 dark:hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
@@ -35,19 +36,10 @@ export default function Navbar() {
               >
                 頁面 A
               </Link>
-              <Link
-                href="/page-B"
-                className="text-foreground hover:text-gray-600 dark:hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                頁面 B
-              </Link>
-              <Link
-                href="/contact"
-                className="text-foreground hover:text-gray-600 dark:hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                聯絡我們
-              </Link>
             </div>
+
+            {/* Avatar Dropdown */}
+            <AvatarDropdown />
           </div>
 
           {/* Mobile menu button */}
@@ -93,22 +85,10 @@ export default function Navbar() {
               頁面 A
             </Link>
             <Link
-              href="/page-B"
+              href="/account"
               className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
             >
-              頁面 B
-            </Link>
-            <Link
-              href="/contact"
-              className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
-            >
-              聯絡我們
-            </Link>
-            <Link
-              href="/contact"
-              className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 block px-3 py-2 text-base font-medium transition-colors"
-            >
-              聯絡我們
+              我的帳戶
             </Link>
           </div>
         </div>
