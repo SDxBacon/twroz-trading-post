@@ -3,6 +3,9 @@
 import { useState } from "react";
 // import shared constants
 import { ROItemId } from "@/constants/ro/item";
+import useItemInfo from "@/hooks/useItemInfo";
+
+import TradeFilterItemNameInput from "./TradeFilterItemNameInput";
 
 /**
  * 基本篩選條件介面
@@ -42,6 +45,8 @@ export default function TradeFilter({
   className = "",
 }: TradeFilterProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
+
+  const { searchItemsByName } = useItemInfo();
 
   // 道具分類選項
   const categories = [
@@ -133,18 +138,7 @@ export default function TradeFilter({
 
         {/* 第一行：搜尋和分類 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              搜尋物品
-            </label>
-            <input
-              type="text"
-              value={filters.itemId}
-              onChange={(e) => handleUpdateFilter("itemId", e.target.value)}
-              placeholder="輸入物品名稱..."
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-            />
-          </div>
+          <TradeFilterItemNameInput />
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
