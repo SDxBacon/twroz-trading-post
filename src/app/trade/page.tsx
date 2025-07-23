@@ -5,7 +5,8 @@ import Pagination from "@/components/Pagination";
 import TradeFilter, {
   TradeFilterType,
 } from "@/app/trade/components/TradeFilter";
-import TradeListTable, { TradeListItem } from "./components/TradeListTable";
+import TradeListTable from "./components/TradeListTable";
+import { TradeListItem } from "@/types/trade";
 
 // Mock data for trade items
 const mockTradeItems: TradeListItem[] = [
@@ -89,10 +90,7 @@ export default function TradePage() {
 
           <div className="p-6">
             {/* Trade Items */}
-            <TradeListTable
-              items={mockTradeItems}
-              onItemClick={handleItemClick}
-            />
+            <TradeListTable />
 
             {/* Pagination */}
             <Pagination
