@@ -9,13 +9,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "lh3.googleusercontent.com",
+        hostname: "cdn.discordapp.com",
         port: "",
         pathname: "/**",
       },
     ],
   },
-  serverExternalPackages: ["jose", "@panva/hkdf"],
+  // serverExternalPackages: ["jose", "@panva/hkdf"],
 };
 
 export default nextConfig;
