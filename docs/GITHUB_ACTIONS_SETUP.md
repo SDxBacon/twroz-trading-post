@@ -43,21 +43,17 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 
 ### 更新 `wrangler.jsonc`
 
-確保您的 `wrangler.jsonc` 包含正確的專案名稱：
+確保您的 `wrangler.jsonc` 包含正確的 Pages 配置：
 
 ```jsonc
 {
   "name": "twroz-trading-post",
   "compatibility_date": "2025-03-01",
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "twroz-trading-post-db",
-      "database_id": "your-database-id"
-    }
-  ]
+  "pages_build_output_dir": ".open-next/assets"
 }
 ```
+
+**注意**：Pages 專案配置不能包含 Worker 相關的欄位（如 `main`、`assets`、`compatibility_flags`）。
 
 ## 4. GitHub Actions Workflow 功能
 
@@ -74,7 +70,7 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 4. **安裝依賴** (`pnpm install`)
 5. **構建應用** (`pnpm build`)
 6. **OpenNext 構建** (`npx opennextjs-cloudflare build`)
-7. **部署到 Cloudflare Pages**
+7. **使用 Wrangler 部署到 Cloudflare Pages**
 
 ### 環境變數：
 
@@ -115,22 +111,62 @@ git push origin main
 ## 7. 常見問題排查
 
 ### pnpm deploy 錯誤
+
 如果遇到 "A deploy is only possible from inside a workspace" 錯誤：
+
 - 使用 `pnpm build` 和 `npx opennextjs-cloudflare build` 分離構建步驟
 - 避免在 CI/CD 中使用 `pnpm deploy`，改用 Cloudflare Pages action 部署
 
 ### pnpm 版本衝突
+
 如果遇到 "Multiple versions of pnpm specified" 錯誤：
+
 - 移除 GitHub Actions 中的 `version: latest`
 - 讓 pnpm action 使用 package.json 中的 `packageManager` 版本
 
 ### 構建失敗
+
+**Wrangler 配置錯誤**：
+如果遇到 "Configuration file cannot contain both 'main' and 'pages_build_output_dir'" 錯誤：
+
+- Pages 專案不能同時包含 Worker 配置（`main`, `assets`）和 Pages 配置
+- 移除 `main`、`assets`、`compatibility_flags` 等 Worker 相關配置
+- 只保留 Pages 專案必需的配置項
+
+如果遇到 "The name 'ASSETS' is reserved in Pages projects" 錯誤：
+
+- 將 wrangler.jsonc 中的 assets binding 名稱改為 `STATIC_ASSETS`
+- `ASSETS` 是 Pages 專案中的保留名稱
 
 - 檢查所有 Secrets 是否正確設置
 - 確認 `package.json` 中的構建腳本
 - 查看 Actions 日誌中的錯誤訊息
 
 ### 部署失敗
+
+**使用 Wrangler Action 的優勢**：
+
+- 更直接的 Cloudflare Pages 部署方式
+- 更好的錯誤處理和日誌輸出
+- 與 OpenNext 更好的兼容性
+- 支援 GitHub Deployments 整合
+- 自動處理生產和預覽部署（基於分支）
+
+**GitHub Actions 權限**：
+- `contents: read` - 讀取代碼內容
+- `deployments: write` - 建立 GitHub Deployments
+
+**GitHub Deployments 整合**：
+- 自動在 GitHub 介面顯示部署狀態
+- 提供部署歷史記錄
+- 支援預覽部署（非主分支）
+
+**Wrangler 配置要求**：
+
+- 必須在 `wrangler.jsonc` 中添加 `pages_build_output_dir` 字段
+- 指向正確的構建輸出目錄 `.open-next/assets`
+
+**常見問題**：
 
 - 驗證 Cloudflare API Token 權限
 - 確認 Account ID 正確
