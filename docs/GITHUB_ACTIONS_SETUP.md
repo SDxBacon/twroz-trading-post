@@ -113,6 +113,11 @@ git push origin main
 
 ## 7. 常見問題排查
 
+### pnpm 版本衝突
+如果遇到 "Multiple versions of pnpm specified" 錯誤：
+- 移除 GitHub Actions 中的 `version: latest`
+- 讓 pnpm action 使用 package.json 中的 `packageManager` 版本
+
 ### 構建失敗
 
 - 檢查所有 Secrets 是否正確設置
