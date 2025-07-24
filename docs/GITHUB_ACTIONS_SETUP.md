@@ -73,7 +73,8 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 3. **安裝 pnpm**
 4. **安裝依賴** (`pnpm install`)
 5. **構建應用** (`pnpm build`)
-6. **部署到 Cloudflare Pages**
+6. **OpenNext 構建** (`npx opennextjs-cloudflare build`)
+7. **部署到 Cloudflare Pages**
 
 ### 環境變數：
 
@@ -112,6 +113,11 @@ git push origin main
 3. 查看 `twroz-trading-post` 專案的部署狀態
 
 ## 7. 常見問題排查
+
+### pnpm deploy 錯誤
+如果遇到 "A deploy is only possible from inside a workspace" 錯誤：
+- 使用 `pnpm build` 和 `npx opennextjs-cloudflare build` 分離構建步驟
+- 避免在 CI/CD 中使用 `pnpm deploy`，改用 Cloudflare Pages action 部署
 
 ### pnpm 版本衝突
 如果遇到 "Multiple versions of pnpm specified" 錯誤：

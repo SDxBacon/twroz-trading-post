@@ -29,12 +29,15 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build with OpenNext
-        run: pnpm deploy
+        run: pnpm build
         env:
           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+
+      - name: Build for Cloudflare
+        run: npx opennextjs-cloudflare build
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
