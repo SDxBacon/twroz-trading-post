@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { ROUTES } from "../constants/router";
 import AnimatedTradingCounter from "../components/AnimatedTradingCounter";
 
 export default function Home() {
+  const { data: session } = useSession();
+
   // 使用 TanStack Query 調用 hello API
   const { data, error } = useQuery({
     queryKey: ["hello"],
@@ -38,6 +41,16 @@ export default function Home() {
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               TWROZ Trading Post
             </h1>
+
+            {/* 歡迎訊息 */}
+            {session && (
+              <div className="mb-6">
+                <p className="text-lg text-blue-600 font-medium">
+                  歡迎回來，{session.user?.name}！
+                </p>
+              </div>
+            )}
+
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-3xl mx-auto">
               台灣 RO
               樂園伺服器專屬的第三方交易平台，提供安全、便利的道具交易環境。

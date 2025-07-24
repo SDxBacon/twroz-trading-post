@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { signOut } from "next-auth/react";
 import { USER_MENU_ITEMS } from "../constants/router";
 
 interface AvatarDropdownProps {
@@ -172,7 +173,10 @@ export default function AvatarDropdown({
                 <div className="border-t border-gray-200 dark:border-gray-700 mt-2 pt-2">
                   <button
                     className="flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                      setIsOpen(false);
+                      signOut();
+                    }}
                   >
                     <svg
                       className="w-4 h-4 mr-3"
