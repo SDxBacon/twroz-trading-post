@@ -8,19 +8,7 @@ import TradeFilter, {
 import TradeListTable from "./components/TradeListTable";
 import { TradeListItem } from "@/types/trade";
 
-// Mock data for trade items
-const mockTradeItems: TradeListItem[] = [
-  {
-    id: "1",
-    name: "+10 聖劍 [1]",
-    description: "附魔: ATK +15, 命中 +10",
-    price: 50000000,
-    slotCount: 2,
-    category: "武器",
-  },
-];
-
-export default function TradePage() {
+function TradePage() {
   // 篩選器狀態
   const [filters, setFilters] = useState<TradeFilterType>({
     itemId: "",
@@ -106,3 +94,5 @@ export default function TradePage() {
     </div>
   );
 }
+
+export default TradePage;

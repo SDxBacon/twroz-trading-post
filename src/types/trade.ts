@@ -4,6 +4,15 @@ import { ItemInfo } from "@/hooks/useItemInfo";
 export interface TradeListItem extends ItemInfo {
   price: number;
   category: string;
-  // iconGradient: string;
-  // publisher: string;
+}
+
+// TODO:
+export interface TradeData {
+  id: ROItemId;
+  refineLevel: number;
+  enchantments: any[];
+  cardSlots: ROItemId[];
+  price: number;
+  seller: string;
+  listedAt: string;
 }

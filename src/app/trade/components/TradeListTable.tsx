@@ -6,47 +6,65 @@ import {
   flexRender,
   createColumnHelper,
 } from "@tanstack/react-table";
-
-// Placeholder data type
-interface TradeItem {
-  id: string;
-  name: string;
-  refineLevel: number;
-  enchantments: string;
-  cardSlots: number;
-  price: number;
-  seller: string;
-  listedAt: string;
-}
+import { TradeData } from "@/types/trade";
+import TradeListTimeCell from "./TradeListTimeCell";
+import TradeListItemNameCell from "./TradeListItemNameCell";
+import TradeListEnchantmentsCell from "./TradeListEnchantmentsCell";
+import TradeListCardSlotsCell from "./TradeListCardSlotsCell";
+import TradeListSellerCell from "./TradeListSellerCell";
 
 // Create placeholder data
-const mockData: TradeItem[] = [
+const mockData: TradeData[] = [
   {
-    id: "1",
-    name: "神器劍 [4]",
+    id: "2301",
     refineLevel: 10,
-    enchantments: "力量+3, 敏捷+2",
-    cardSlots: 4,
+    enchantments: ["力量+3, 敏捷+2"],
+    cardSlots: [],
     price: 1500000,
     seller: "玩家A",
     listedAt: "2025-07-24 10:30",
   },
   {
-    id: "2",
-    name: "魔法法杖 [2]",
+    id: "2302",
     refineLevel: 7,
-    enchantments: "智力+5",
-    cardSlots: 2,
+    enchantments: ["力量+3, 敏捷+2"],
+    cardSlots: [],
+    price: 800000,
+    seller: "玩家B",
+    listedAt: "2025-07-24 09:15",
+  },
+  {
+    id: "2302",
+    refineLevel: 7,
+    enchantments: ["力量+3, 敏捷+2"],
+    cardSlots: ["4002"],
+    price: 800000,
+    seller: "玩家B",
+    listedAt: "2025-07-24 09:15",
+  },
+  {
+    id: "500086",
+    refineLevel: 7,
+    enchantments: ["力量+3, 敏捷+2"],
+    cardSlots: ["4002"],
+    price: 800000,
+    seller: "玩家B",
+    listedAt: "2025-07-24 09:15",
+  },
+  {
+    id: "1301",
+    refineLevel: 7,
+    enchantments: ["力量+3, 敏捷+2"],
+    cardSlots: ["4002"],
     price: 800000,
     seller: "玩家B",
     listedAt: "2025-07-24 09:15",
   },
   {
     id: "3",
-    name: "防禦盾牌 [1]",
     refineLevel: 15,
-    enchantments: "體質+4, 防禦+10",
-    cardSlots: 1,
+    enchantments: ["體質+4, 防禦+10"],
+    cardSlots: [],
     price: 2200000,
     seller: "玩家C",
     listedAt: "2025-07-24 08:45",
@@ -54,15 +72,15 @@ const mockData: TradeItem[] = [
 ];
 
 interface TradeListTableProps {
-  items?: TradeItem[];
-  onItemClick?: (item: TradeItem) => void;
+  items?: TradeData[];
+  onItemClick?: (item: TradeData) => void;
 }
 
 export default function TradeListTable({
   items = mockData,
   onItemClick,
 }: TradeListTableProps) {
-  const columnHelper = createColumnHelper<TradeItem>();
+  const columnHelper = createColumnHelper<TradeData>();
 
   const columns = [
     // # (index)
@@ -78,36 +96,22 @@ export default function TradeListTable({
     }),
 
     // 道具名稱
-    columnHelper.accessor("name", {
+    columnHelper.accessor("id", {
       header: "道具名稱",
       cell: (info) => (
-        <div className="font-medium text-gray-900 dark:text-white">
-          {info.getValue()}
-        </div>
+        <TradeListItemNameCell
+          id={info.getValue()}
+          refineLevel={info.row.original.refineLevel}
+        />
       ),
-      size: 200,
-    }),
-
-    // 精煉值
-    columnHelper.accessor("refineLevel", {
-      header: "精煉值",
-      cell: (info) => (
-        <div className="text-center">
-          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
-            +{info.getValue()}
-          </span>
-        </div>
-      ),
-      size: 80,
+      size: 250,
     }),
 
     // 詞綴
     columnHelper.accessor("enchantments", {
       header: "詞綴",
       cell: (info) => (
-        <div className="text-sm text-gray-600 dark:text-gray-400 max-w-40 truncate">
-          {info.getValue()}
-        </div>
+        <TradeListEnchantmentsCell enchantments={info.getValue()} />
       ),
       size: 150,
     }),
@@ -116,11 +120,10 @@ export default function TradeListTable({
     columnHelper.accessor("cardSlots", {
       header: "卡槽",
       cell: (info) => (
-        <div className="text-center">
-          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
-            [{info.getValue()}]
-          </span>
-        </div>
+        <TradeListCardSlotsCell
+          id={info.row.original.id}
+          cardSlots={info.getValue()}
+        />
       ),
       size: 70,
     }),
@@ -139,29 +142,21 @@ export default function TradeListTable({
     // 賣家
     columnHelper.accessor("seller", {
       header: "賣家",
-      cell: (info) => (
-        <div className="text-sm text-gray-700 dark:text-gray-300">
-          {info.getValue()}
-        </div>
-      ),
+      cell: (info) => <TradeListSellerCell seller={info.getValue()} />,
       size: 100,
     }),
 
     // 上架時間
     columnHelper.accessor("listedAt", {
       header: "上架時間",
-      cell: (info) => (
-        <div className="text-sm text-gray-500 dark:text-gray-400">
-          {info.getValue()}
-        </div>
-      ),
+      cell: (info) => <TradeListTimeCell listedAt={info.getValue()} />,
       size: 130,
     }),
 
-    // 操作
+    // 聯繫賣家
     columnHelper.display({
-      id: "actions",
-      header: "操作",
+      id: "contact",
+      header: "聯繫賣家",
       cell: (info) => (
         <div className="flex gap-2">
           <button

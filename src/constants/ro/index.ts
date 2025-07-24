@@ -1,3 +1,3 @@
 export * from "./item";
 
-export * from "./severs";
+export * from "./sever";

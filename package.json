@@ -17,10 +17,13 @@
 		"@tanstack/react-query": "^5.83.0",
 		"@tanstack/react-query-devtools": "^5.83.0",
 		"@tanstack/react-table": "^8.21.3",
+		"dayjs": "^1.11.13",
 		"lodash": "^4.17.21",
 		"next": "15.3.5",
 		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
+		"react-dom": "^19.0.0",
+		"react-icons": "^5.5.0",
+		"react-tooltip": "^5.29.1"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
