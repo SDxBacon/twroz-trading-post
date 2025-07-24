@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -33,7 +35,7 @@ export default function MyOfferTable({
   globalFilter,
   onGlobalFilterChange,
 }: MyOfferTableProps) {
-  const getStatusColor = (status: string) => {
+  const getStatusColor = useCallback((status: string) => {
     switch (status) {
       case "active":
         return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
@@ -46,9 +48,9 @@ export default function MyOfferTable({
       default:
         return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
     }
-  };
+  }, []);
 
-  const getStatusText = (status: string) => {
+  const getStatusText = useCallback((status: string) => {
     switch (status) {
       case "active":
         return "進行中";
@@ -61,7 +63,7 @@ export default function MyOfferTable({
       default:
         return status;
     }
-  };
+  }, []);
 
   const columns = useMemo(
     () => [

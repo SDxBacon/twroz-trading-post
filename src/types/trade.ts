@@ -10,6 +10,7 @@ export interface TradeListItem extends ItemInfo {
 export interface TradeData {
   id: ROItemId;
   refineLevel: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   enchantments: any[];
   cardSlots: ROItemId[];
   price: number;

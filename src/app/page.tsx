@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "../constants/router";
 import AnimatedTradingCounter from "../components/AnimatedTradingCounter";

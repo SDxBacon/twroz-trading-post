@@ -6,7 +6,7 @@ import TradeFilter, {
   TradeFilterType,
 } from "@/app/trade/components/TradeFilter";
 import TradeListTable from "./components/TradeListTable";
-import { TradeListItem } from "@/types/trade";
+// import { TradeListItem } from "@/types/trade";
 
 function TradePage() {
   // 篩選器狀態
@@ -32,11 +32,6 @@ function TradePage() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-  };
-
-  const handleItemClick = (item: TradeListItem) => {
-    console.log("查看交易詳情:", item);
-    // TODO: Navigate to trade detail page or open modal
   };
 
   return (

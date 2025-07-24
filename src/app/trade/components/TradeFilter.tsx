@@ -3,7 +3,7 @@
 import { useState } from "react";
 // import shared constants
 import { ROItemId } from "@/constants/ro/item";
-import useItemInfo from "@/hooks/useItemInfo";
+// import useItemInfo from "@/hooks/useItemInfo";
 
 import TradeFilterItemNameInput from "./TradeFilterItemNameInput";
 
@@ -46,7 +46,7 @@ export default function TradeFilter({
 }: TradeFilterProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  const { searchItemsByName } = useItemInfo();
+  // const { searchItemsByName } = useItemInfo();
 
   // 道具分類選項
   const categories = [
@@ -59,28 +59,28 @@ export default function TradeFilter({
     { value: "etc", label: "其他" },
   ];
 
-  // 武器類型選項
-  const weaponTypes = [
-    { value: "", label: "全部武器" },
-    { value: "sword", label: "劍" },
-    { value: "spear", label: "矛" },
-    { value: "axe", label: "斧" },
-    { value: "mace", label: "錘" },
-    { value: "bow", label: "弓" },
-    { value: "staff", label: "法杖" },
-    { value: "katar", label: "拳刃" },
-  ];
+  // // 武器類型選項
+  // const weaponTypes = [
+  //   { value: "", label: "全部武器" },
+  //   { value: "sword", label: "劍" },
+  //   { value: "spear", label: "矛" },
+  //   { value: "axe", label: "斧" },
+  //   { value: "mace", label: "錘" },
+  //   { value: "bow", label: "弓" },
+  //   { value: "staff", label: "法杖" },
+  //   { value: "katar", label: "拳刃" },
+  // ];
 
-  // 防具類型選項
-  const armorTypes = [
-    { value: "", label: "全部防具" },
-    { value: "helmet", label: "頭盔" },
-    { value: "armor", label: "鎧甲" },
-    { value: "shield", label: "盾牌" },
-    { value: "garment", label: "披肩" },
-    { value: "shoes", label: "鞋子" },
-    { value: "accessory", label: "飾品" },
-  ];
+  // // 防具類型選項
+  // const armorTypes = [
+  //   { value: "", label: "全部防具" },
+  //   { value: "helmet", label: "頭盔" },
+  //   { value: "armor", label: "鎧甲" },
+  //   { value: "shield", label: "盾牌" },
+  //   { value: "garment", label: "披肩" },
+  //   { value: "shoes", label: "鞋子" },
+  //   { value: "accessory", label: "飾品" },
+  // ];
 
   // 排序選項
   const sortOptions = [

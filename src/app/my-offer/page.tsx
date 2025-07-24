@@ -97,7 +97,11 @@ export default function MyOfferPage() {
                 ].map((tab) => (
                   <button
                     key={tab.key}
-                    onClick={() => setSelectedTab(tab.key as any)}
+                    onClick={() =>
+                      setSelectedTab(
+                        tab.key as "all" | "active" | "pending" | "completed"
+                      )
+                    }
                     className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
                       selectedTab === tab.key
                         ? "bg-blue-600 text-white"
