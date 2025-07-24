@@ -1,8 +1,34 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { ROUTES } from "../constants/router";
 import AnimatedTradingCounter from "../components/AnimatedTradingCounter";
 
 export default function Home() {
+  // 使用 TanStack Query 調用 hello API
+  const { data, error } = useQuery({
+    queryKey: ["hello"],
+    queryFn: async () => {
+      const response = await fetch("/api/hello");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    },
+  });
+
+  // 使用 useEffect 來 console.log 結果
+  useEffect(() => {
+    if (data) {
+      console.log("Hello API response:", data);
+    }
+    if (error) {
+      console.error("Hello API error:", error);
+    }
+  }, [data, error]);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
