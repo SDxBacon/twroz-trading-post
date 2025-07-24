@@ -1,6 +1,11 @@
+"use client";
+
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 export default function AccountPage() {
+  const { data: session } = useSession();
+
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-6xl mx-auto">
@@ -18,25 +23,25 @@ export default function AccountPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
               <div className="text-center mb-6">
                 <div className="relative mx-auto w-24 h-24 mb-4">
-                  <Image
-                    src="/avatar.jpg"
-                    alt="User Avatar"
-                    width={96}
-                    height={96}
-                    className="rounded-full object-cover border-4 border-blue-200 dark:border-blue-700"
-                    // onError={(e) => {
-                    //   // Fallback to a colored circle with initials if image fails
-                    //   e.currentTarget.style.display = "none";
-                    // }}
-                  />
-                  {/* Fallback avatar */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                    用
-                  </div>
+                  {session?.user?.image ? (
+                    <Image
+                      src={session.user.image}
+                      alt="User Avatar"
+                      width={96}
+                      height={96}
+                      className="rounded-full object-cover border-4 border-blue-200 dark:border-blue-700"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold border-4 border-blue-200 dark:border-blue-700">
+                      {session?.user?.name?.charAt(0) || "用"}
+                    </div>
+                  )}
                 </div>
-                <h2 className="text-xl font-semibold mb-1">用戶名稱</h2>
+                <h2 className="text-xl font-semibold mb-1">
+                  {session?.user?.name || "用戶"}
+                </h2>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
-                  user@gmail.com
+                  {session?.user?.email || "user@gmail.com"}
                 </p>
               </div>
 
@@ -46,14 +51,6 @@ export default function AccountPage() {
                     註冊時間
                   </span>
                   <span className="text-sm font-medium">2024-01-15</span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    帳戶狀態
-                  </span>
-                  {/* <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                    活躍
-                  </span> */}
                 </div>
               </div>
             </div>
