@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { NAVIGATION_ITEMS } from "../constants/router";
 import AvatarDropdown from "./AvatarDropdown";
 
@@ -50,12 +50,12 @@ export default function Navbar() {
                   avatarSrc={session.user?.image || ""}
                 />
               ) : (
-                <button
-                  onClick={() => signIn("google")}
+                <Link
+                  href="/auth"
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
-                  Google 登入
-                </button>
+                  登入
+                </Link>
               )}
             </div>
           </div>
@@ -114,12 +114,12 @@ export default function Navbar() {
                 </Link>
               </>
             ) : (
-              <button
-                onClick={() => signIn("google")}
-                className="w-full text-left bg-blue-600 hover:bg-blue-700 text-white block px-3 py-2 text-base font-medium transition-colors rounded-md"
+              <Link
+                href="/auth"
+                className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white block px-3 py-2 text-base font-medium transition-colors rounded-md"
               >
-                Google 登入
-              </button>
+                登入
+              </Link>
             )}
           </div>
         </div>
