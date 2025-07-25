@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { FaGoogle, FaDiscord } from "react-icons/fa";
 
 export default function AccountPage() {
   const { data: session } = useSession();
@@ -60,11 +61,8 @@ export default function AccountPage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Account Information */}
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center mb-6">
                 <h3 className="text-xl font-semibold">個人資訊</h3>
-                <button className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
-                  編輯
-                </button>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
@@ -81,37 +79,45 @@ export default function AccountPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Gmail 帳號
+                    預留欄位
                   </label>
-                  <div className="flex items-center">
-                    <input
-                      type="email"
-                      value="user@gmail.com"
-                      readOnly
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-lg bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
-                    />
-                    <div className="px-3 py-2 bg-green-100 dark:bg-green-900 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-lg">
-                      <span className="text-green-600 dark:text-green-400 text-sm font-medium">
-                        已綁定
-                      </span>
-                    </div>
-                  </div>
+                  <input
+                    type="text"
+                    placeholder="功能開發中..."
+                    readOnly
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-400 dark:text-gray-500"
+                  />
                 </div>
+
+                {/* 已連動帳號 */}
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium mb-2">
-                    Discord 帳號
-                  </label>
-                  <div className="flex items-center">
-                    <input
-                      type="text"
-                      value="User#1234"
-                      readOnly
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-lg bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
-                    />
-                    <div className="px-3 py-2 bg-green-100 dark:bg-green-900 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-lg">
-                      <span className="text-green-600 dark:text-green-400 text-sm font-medium">
+                  <h4 className="text-lg font-bold mb-4">已連動帳號</h4>
+
+                  <div className="space-y-3">
+                    {/* Google 帳號 */}
+                    <div className="flex items-center justify-between py-3 px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
+                      <div className="flex items-center space-x-3">
+                        <FaGoogle className="text-red-500 text-lg" />
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Google 帳號
+                        </span>
+                      </div>
+                      <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors">
+                        開始綁定
+                      </button>
+                    </div>
+
+                    {/* Discord 帳號 */}
+                    <div className="flex items-center justify-between py-3 px-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
+                      <div className="flex items-center space-x-3">
+                        <FaDiscord className="text-indigo-500 text-lg" />
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Discord 帳號
+                        </span>
+                      </div>
+                      <button className="text-green-600 dark:text-green-400 text-sm font-medium">
                         已綁定
-                      </span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -138,6 +144,21 @@ export default function AccountPage() {
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                   </label>
+                </div>
+
+                <div className="flex items-center justify-between py-3">
+                  <div>
+                    <h4 className="font-medium">刪除帳號</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      永久刪除您的帳號和所有相關資料，此操作無法復原
+                    </p>
+                  </div>
+                  <button
+                    disabled
+                    className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg opacity-50 cursor-not-allowed"
+                  >
+                    刪除帳號
+                  </button>
                 </div>
               </div>
             </div>
