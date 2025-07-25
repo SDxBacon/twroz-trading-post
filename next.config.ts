@@ -7,6 +7,14 @@ initOpenNextCloudflareForDev();
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
+      // Google oauth profile images
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+      // Discord oauth profile images
       {
         protocol: "https",
         hostname: "cdn.discordapp.com",
