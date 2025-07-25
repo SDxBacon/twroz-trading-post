@@ -1,11 +1,11 @@
 "use client";
 
+import { useEffect, useState, Suspense } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { FaGoogle, FaDiscord } from "react-icons/fa";
 
-export default function AuthPage() {
+function AuthPageContent() {
   const { status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -143,5 +143,24 @@ export default function AuthPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+        <p className="mt-4 text-muted-foreground">載入中...</p>
+      </div>
+    </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <AuthPageContent />
+    </Suspense>
   );
 }
