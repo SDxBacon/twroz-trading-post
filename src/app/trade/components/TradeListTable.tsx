@@ -7,16 +7,16 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table";
 import { TradeData } from "@/types/trade";
-import TradeListTimeCell from "./TradeListTimeCell";
-import TradeListItemNameCell from "./TradeListItemNameCell";
 import TradeListEnchantmentsCell from "./TradeListEnchantmentsCell";
-import TradeListCardSlotsCell from "./TradeListCardSlotsCell";
 import TradeListSellerCell from "./TradeListSellerCell";
+
+import { ItemNameCell, CardSlotsCell, TimeCell } from "./table-cells";
 
 // Create placeholder data
 const mockData: TradeData[] = [
   {
-    id: "2301",
+    id: "1",
+    itemId: "2301",
     refineLevel: 10,
     enchantments: ["力量+3, 敏捷+2"],
     cardSlots: [],
@@ -25,7 +25,8 @@ const mockData: TradeData[] = [
     listedAt: "2025-07-24 10:30",
   },
   {
-    id: "2302",
+    id: "1",
+    itemId: "2302",
     refineLevel: 7,
     enchantments: ["力量+3, 敏捷+2"],
     cardSlots: [],
@@ -34,7 +35,8 @@ const mockData: TradeData[] = [
     listedAt: "2025-07-24 09:15",
   },
   {
-    id: "2302",
+    id: "1",
+    itemId: "2302",
     refineLevel: 7,
     enchantments: ["力量+3, 敏捷+2"],
     cardSlots: ["4002"],
@@ -43,7 +45,8 @@ const mockData: TradeData[] = [
     listedAt: "2025-07-24 09:15",
   },
   {
-    id: "500086",
+    id: "1",
+    itemId: "500086",
     refineLevel: 7,
     enchantments: ["力量+3, 敏捷+2"],
     cardSlots: ["4002"],
@@ -52,7 +55,8 @@ const mockData: TradeData[] = [
     listedAt: "2025-07-24 09:15",
   },
   {
-    id: "1301",
+    id: "1",
+    itemId: "1301",
     refineLevel: 7,
     enchantments: ["力量+3, 敏捷+2"],
     cardSlots: ["4002"],
@@ -61,7 +65,8 @@ const mockData: TradeData[] = [
     listedAt: "2025-07-24 09:15",
   },
   {
-    id: "3",
+    id: "1",
+    itemId: "3",
     refineLevel: 15,
     enchantments: ["體質+4, 防禦+10"],
     cardSlots: [],
@@ -96,11 +101,11 @@ export default function TradeListTable({
     }),
 
     // 道具名稱
-    columnHelper.accessor("id", {
+    columnHelper.display({
       header: "道具名稱",
       cell: (info) => (
-        <TradeListItemNameCell
-          id={info.getValue()}
+        <ItemNameCell
+          itemId={info.row.original.itemId}
           refineLevel={info.row.original.refineLevel}
         />
       ),
@@ -120,8 +125,8 @@ export default function TradeListTable({
     columnHelper.accessor("cardSlots", {
       header: "卡槽",
       cell: (info) => (
-        <TradeListCardSlotsCell
-          id={info.row.original.id}
+        <CardSlotsCell
+          itemId={info.row.original.itemId}
           cardSlots={info.getValue()}
         />
       ),
@@ -149,7 +154,7 @@ export default function TradeListTable({
     // 上架時間
     columnHelper.accessor("listedAt", {
       header: "上架時間",
-      cell: (info) => <TradeListTimeCell listedAt={info.getValue()} />,
+      cell: (info) => <TimeCell listedAt={info.getValue()} />,
       size: 130,
     }),
 

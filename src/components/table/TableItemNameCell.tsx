@@ -1,18 +1,18 @@
 import { ROItemId } from "@/constants/ro";
 import useItemInfo from "@/hooks/useItemInfo";
 
-interface TradeListItemNameCellProps {
-  id: ROItemId;
+interface TableItemNameCellProps {
+  itemId: ROItemId;
   refineLevel: number;
 }
 
 export default function TradeListItemNameCell({
-  id,
+  itemId,
   refineLevel,
-}: TradeListItemNameCellProps) {
+}: TableItemNameCellProps) {
   const { getItemInfoById } = useItemInfo();
 
-  const itemInfo = getItemInfoById(id);
+  const itemInfo = getItemInfoById(itemId);
   if (!itemInfo) {
     return <div className="text-gray-500">Unknown Item</div>;
   }
