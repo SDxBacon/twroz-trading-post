@@ -7,10 +7,14 @@ import {
   createColumnHelper,
 } from "@tanstack/react-table";
 import { TradeData } from "@/types/trade";
-import TradeListEnchantmentsCell from "./TradeListEnchantmentsCell";
 import TradeListSellerCell from "./TradeListSellerCell";
 
-import { ItemNameCell, CardSlotsCell, TimeCell } from "./table-cells";
+import {
+  ItemNameCell,
+  EnchantmentsCell,
+  CardSlotsCell,
+  TimeCell,
+} from "./table-cells";
 
 // Create placeholder data
 const mockData: TradeData[] = [
@@ -18,7 +22,7 @@ const mockData: TradeData[] = [
     id: "1",
     itemId: "2301",
     refineLevel: 10,
-    enchantments: ["力量+3, 敏捷+2"],
+    enchantments: ["力量+3", "敏捷+2"],
     cardSlots: [],
     price: 1500000,
     seller: "玩家A",
@@ -28,7 +32,7 @@ const mockData: TradeData[] = [
     id: "1",
     itemId: "2302",
     refineLevel: 7,
-    enchantments: ["力量+3, 敏捷+2"],
+    enchantments: ["力量+3", "敏捷+2"],
     cardSlots: [],
     price: 800000,
     seller: "玩家B",
@@ -38,7 +42,7 @@ const mockData: TradeData[] = [
     id: "1",
     itemId: "2302",
     refineLevel: 7,
-    enchantments: ["力量+3, 敏捷+2"],
+    enchantments: ["力量+3", "敏捷+2"],
     cardSlots: ["4002"],
     price: 800000,
     seller: "玩家B",
@@ -48,7 +52,7 @@ const mockData: TradeData[] = [
     id: "1",
     itemId: "500086",
     refineLevel: 7,
-    enchantments: ["力量+3, 敏捷+2"],
+    enchantments: ["力量+3", "敏捷+2"],
     cardSlots: ["4002"],
     price: 800000,
     seller: "玩家B",
@@ -58,7 +62,7 @@ const mockData: TradeData[] = [
     id: "1",
     itemId: "1301",
     refineLevel: 7,
-    enchantments: ["力量+3, 敏捷+2"],
+    enchantments: ["力量+", "敏捷+2"],
     cardSlots: ["4002"],
     price: 800000,
     seller: "玩家B",
@@ -68,7 +72,7 @@ const mockData: TradeData[] = [
     id: "1",
     itemId: "3",
     refineLevel: 15,
-    enchantments: ["體質+4, 防禦+10"],
+    enchantments: ["體質+4", "防禦+10"],
     cardSlots: [],
     price: 2200000,
     seller: "玩家C",
@@ -115,9 +119,7 @@ export default function TradeListTable({
     // 詞綴
     columnHelper.accessor("enchantments", {
       header: "詞綴",
-      cell: (info) => (
-        <TradeListEnchantmentsCell enchantments={info.getValue()} />
-      ),
+      cell: (info) => <EnchantmentsCell enchantments={info.getValue()} />,
       size: 150,
     }),
 

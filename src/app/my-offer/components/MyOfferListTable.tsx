@@ -8,7 +8,12 @@ import {
 } from "@tanstack/react-table";
 
 // import table cell components
-import { TimeCell, CardSlotsCell, ItemNameCell } from "./table-cells";
+import {
+  ItemNameCell,
+  EnchantmentsCell,
+  CardSlotsCell,
+  TimeCell,
+} from "./table-cells";
 
 // 定義用戶交易狀態類型
 export type OfferStatus =
@@ -155,26 +160,7 @@ const columns = [
   // 詞綴
   columnHelper.accessor("enchantments", {
     header: "詞綴",
-    cell: (info) => {
-      const enchantments = info.getValue();
-      if (enchantments.length === 0) {
-        return (
-          <span className="text-gray-500 dark:text-gray-400 text-sm">無</span>
-        );
-      }
-      return (
-        <div className="space-y-1">
-          {enchantments.map((enchantment, index) => (
-            <div
-              key={index}
-              className="inline-block bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 text-xs px-2 py-1 rounded-full mr-1"
-            >
-              {enchantment}
-            </div>
-          ))}
-        </div>
-      );
-    },
+    cell: (info) => <EnchantmentsCell enchantments={info.getValue()} />,
     size: 150,
   }),
 
