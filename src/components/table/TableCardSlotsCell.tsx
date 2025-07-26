@@ -1,17 +1,21 @@
-import { TradeData } from "@/types/trade";
+// import { TradeData } from "@/types/trade";
+import { ROItemId } from "@/constants/ro";
 import useItemInfo from "@/hooks/useItemInfo";
 
-interface TradeListCardSlotsCellProps {
-  id: TradeData["id"];
-  cardSlots: TradeData["cardSlots"];
+interface TableCardSlotCellProps {
+  /**
+   * Item ID for the card slot cell, used to fetch item information.
+   */
+  itemId: ROItemId;
+  /**
+   * Array of card slot IDs associated with the item.
+   */
+  cardSlots: ROItemId[];
 }
 
-export default function TradeListCardSlotsCell({
-  id,
-  cardSlots,
-}: TradeListCardSlotsCellProps) {
+function TableCardSlotCell({ itemId, cardSlots }: TableCardSlotCellProps) {
   const { getItemInfoById } = useItemInfo();
-  const itemInfo = getItemInfoById(id);
+  const itemInfo = getItemInfoById(itemId);
 
   // If itemInfo is null or slotCount is 0, display a placeholder
   if (!itemInfo || itemInfo.slotCount === 0) {
@@ -69,3 +73,5 @@ export default function TradeListCardSlotsCell({
     </div>
   );
 }
+
+export default TableCardSlotCell;

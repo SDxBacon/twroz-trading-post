@@ -8,7 +8,8 @@ export interface TradeListItem extends ItemInfo {
 
 // TODO:
 export interface TradeData {
-  id: ROItemId;
+  id: string;
+  itemId: ROItemId;
   refineLevel: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   enchantments: any[];

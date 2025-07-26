@@ -6,7 +6,9 @@ import {
   flexRender,
   createColumnHelper,
 } from "@tanstack/react-table";
-import MyOfferListTimeTable from "./MyOfferListTableTimeCell";
+
+// import table cell components
+import { TimeCell, CardSlotsCell, ItemNameCell } from "./table-cells";
 
 // 定義用戶交易狀態類型
 export type OfferStatus =
@@ -19,7 +21,8 @@ export type OfferStatus =
 // 定義用戶交易數據類型
 export interface UserOfferData {
   id: string;
-  itemName: string; // 道具名稱
+  itemId: string; // 道具ID
+  refineLevel: number; // 精煉等級
   enchantments: string[]; // 詞綴
   cardSlots: string[]; // 卡槽
   price: number; // 價格
@@ -58,16 +61,18 @@ const statusConfig = {
 const mockUserOffers: UserOfferData[] = [
   {
     id: "1",
-    itemName: "+10 神聖復活長袍",
+    itemId: "500087",
+    refineLevel: 10,
     enchantments: ["魔力+2", "詠唱時間-10%"],
-    cardSlots: ["4121", "4361"],
+    cardSlots: ["27266", "27266"],
     price: 50000000,
     listedAt: "2025-07-24 10:30",
     status: "active",
   },
   {
     id: "2",
-    itemName: "古城白騎士卡片",
+    itemId: "500087",
+    refineLevel: 8,
     enchantments: [],
     cardSlots: [],
     price: 80000000,
@@ -76,16 +81,18 @@ const mockUserOffers: UserOfferData[] = [
   },
   {
     id: "3",
-    itemName: "+15 血腥骨刺",
+    itemId: "500087",
+    refineLevel: 7,
     enchantments: ["致命毒", "攻擊力+20"],
-    cardSlots: ["4002"],
+    cardSlots: ["27266"],
     price: 120000000,
     listedAt: "2025-07-22 09:15",
     status: "inactive",
   },
   {
     id: "4",
-    itemName: "惡魔女僕頭飾",
+    itemId: "500087",
+    refineLevel: 5,
     enchantments: ["魅力+5"],
     cardSlots: [],
     price: 25000000,
@@ -94,9 +101,10 @@ const mockUserOffers: UserOfferData[] = [
   },
   {
     id: "5",
-    itemName: "+7 魔劍阿波卡利普斯",
+    itemId: "500087",
+    refineLevel: 7,
     enchantments: ["魔法攻擊力+50", "詠唱時間-15%"],
-    cardSlots: ["4236", "4094"],
+    cardSlots: ["27266", "27266"],
     price: 180000000,
     listedAt: "2025-07-20 11:00",
     status: "archived",
@@ -133,15 +141,14 @@ const columns = [
   }),
 
   // 道具名稱
-  columnHelper.accessor("itemName", {
+  columnHelper.display({
     header: "道具名稱",
     size: 250,
     cell: (info) => (
-      <div className="flex items-center space-x-3">
-        <div className="font-medium text-gray-900 dark:text-gray-100">
-          {info.getValue()}
-        </div>
-      </div>
+      <ItemNameCell
+        itemId={info.row.original.itemId}
+        refineLevel={info.row.original.refineLevel}
+      />
     ),
   }),
 
@@ -175,23 +182,11 @@ const columns = [
   columnHelper.accessor("cardSlots", {
     header: "卡槽",
     cell: (info) => {
-      const cardSlots = info.getValue();
-      if (cardSlots.length === 0) {
-        return (
-          <span className="text-gray-500 dark:text-gray-400 text-sm">無</span>
-        );
-      }
       return (
-        <div className="flex flex-wrap gap-1">
-          {cardSlots.map((cardId, index) => (
-            <div
-              key={index}
-              className="inline-block bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 text-xs px-2 py-1 rounded"
-            >
-              {cardId}
-            </div>
-          ))}
-        </div>
+        <CardSlotsCell
+          itemId={info.row.original.itemId}
+          cardSlots={info.getValue()}
+        />
       );
     },
     size: 70,
@@ -211,7 +206,7 @@ const columns = [
   // 上架時間
   columnHelper.accessor("listedAt", {
     header: "上架時間",
-    cell: (info) => <MyOfferListTimeTable listedAt={info.getValue()} />,
+    cell: (info) => <TimeCell listedAt={info.getValue()} />,
     size: 130,
   }),
 
