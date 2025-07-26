@@ -1,107 +1,56 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useMemo } from "react";
-import { ROUTES } from "../../constants/router";
-import MyOfferTable, { OfferItem } from "../../components/MyOfferTable";
+import { useState } from "react";
+import { ROUTES } from "@/constants/router";
+import Pagination from "@/components/Pagination";
+import MyOfferListTable from "./components/MyOfferListTable";
 
-const mockOffers: OfferItem[] = [
-  {
-    id: "1",
-    title: "+10 神聖復活長袍",
-    description: "精煉+10，附魔魔力+2，狀態極佳",
-    price: 50000000,
-    currency: "zeny",
-    status: "active",
-    createdAt: "2024-01-15",
-    category: "防具",
-  },
-  {
-    id: "2",
-    title: "古城白騎士卡片",
-    description: "稀有卡片，增加攻擊力",
-    price: 80000000,
-    currency: "zeny",
-    status: "pending",
-    createdAt: "2024-01-10",
-    category: "卡片",
-  },
-  {
-    id: "3",
-    title: "血腥骨刺",
-    description: "+15 強化，帶有致命毒附魔",
-    price: 120000000,
-    currency: "zeny",
-    status: "completed",
-    createdAt: "2024-01-05",
-    category: "武器",
-  },
-  {
-    id: "4",
-    title: "惡魔女僕頭飾",
-    description: "稀有時裝頭飾，增加魅力",
-    price: 25000000,
-    currency: "zeny",
-    status: "active",
-    createdAt: "2024-01-12",
-    category: "頭飾",
-  },
-  {
-    id: "5",
-    title: "MVP 波利王卡片",
-    description: "極稀有 MVP 卡片，大幅提升生命值",
-    price: 200000000,
-    currency: "zeny",
-    status: "pending",
-    createdAt: "2024-01-08",
-    category: "卡片",
-  },
-];
-
-export default function MyOfferPage() {
-  const [selectedTab, setSelectedTab] = useState<
-    "all" | "active" | "pending" | "completed"
-  >("all");
+function MyOfferPage() {
+  // 篩選狀態
+  const [selectedTab, setSelectedTab] = useState<string>("all");
   const [globalFilter, setGlobalFilter] = useState("");
 
-  const filteredData = useMemo(() => {
-    return mockOffers.filter((offer) => {
-      const matchesTab = selectedTab === "all" || offer.status === selectedTab;
-      return matchesTab;
-    });
-  }, [selectedTab]);
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalItems = 47; // This would come from API response
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // 標籤選項
+  const tabs = [
+    { key: "all", label: "全部" },
+    { key: "active", label: "上架中" },
+    { key: "inactive", label: "已下架" },
+    { key: "completed", label: "已完成" },
+    { key: "archived", label: "封存" },
+  ];
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-            我的交易提案
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            管理您發布的所有交易提案
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">我的交易</h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            管理您發布的交易提案，查看交易狀態和歷史記錄
           </p>
         </div>
 
-        {/* Actions Bar */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm mb-6">
+        {/* Controls Section */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 mb-8">
           <div className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+            {/* Tabs and Actions */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex flex-wrap gap-2">
-                {[
-                  { key: "all", label: "全部" },
-                  { key: "active", label: "進行中" },
-                  { key: "pending", label: "等待中" },
-                  { key: "completed", label: "已完成" },
-                ].map((tab) => (
+                {tabs.map((tab) => (
                   <button
                     key={tab.key}
-                    onClick={() =>
-                      setSelectedTab(
-                        tab.key as "all" | "active" | "pending" | "completed"
-                      )
-                    }
+                    onClick={() => setSelectedTab(tab.key)}
                     className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
                       selectedTab === tab.key
                         ? "bg-blue-600 text-white"
@@ -130,7 +79,7 @@ export default function MyOfferPage() {
                     d="M12 4v16m8-8H4"
                   />
                 </svg>
-                發布新提案
+                發布新交易
               </Link>
             </div>
 
@@ -139,7 +88,7 @@ export default function MyOfferPage() {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="搜尋交易提案..."
+                  placeholder="搜尋我的交易..."
                   value={globalFilter}
                   onChange={(e) => setGlobalFilter(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
@@ -162,13 +111,42 @@ export default function MyOfferPage() {
           </div>
         </div>
 
-        {/* Table */}
-        <MyOfferTable
-          data={filteredData}
-          globalFilter={globalFilter}
-          onGlobalFilterChange={setGlobalFilter}
-        />
+        {/* Offers Results Section */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-600">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-semibold">交易列表</h3>
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  共 47 筆交易
+                </span>
+                <select className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-sm dark:bg-gray-700 dark:text-white">
+                  <option>最新發布</option>
+                  <option>價格由低到高</option>
+                  <option>價格由高到低</option>
+                  <option>狀態排序</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6">
+            {/* User Offers Table */}
+            <MyOfferListTable />
+
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
+export default MyOfferPage;
